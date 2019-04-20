@@ -5,18 +5,38 @@ rows = 2
 
 local ctrl_alt = {"alt", "ctrl"}
 
-local window = hs.window.focusedWindow():screen():frame()
-local column_width = (window.w - window.x) / columns
+function columnWidth(numberOfColumns)
+   numberOfColumns = numberOfColumns or columns
+   local window = hs.window.focusedWindow():screen():frame()
+   return (window.w - window.x) / columns
+end
+
+function columnHeight(numberOfRows)
+   numberOfRows = numberOfRows or rows
+   local window = hs.window.focusedWindow():screen():frame()
+   return (window.h - window.y) / rows
+end
+
+function resizeCurrentWindowInBlocks(x, y, w, h)
+   local win = hs.window.focusedWindow()
+   local f = win:frame()
+
+   f.x = x * columnWidth()
+   f.y = y * columnHeight()
+   f.w = w * columnWidth()
+   f.h = h * columnHeight()
+   win:setFrame(f)
+end
 
 function resizeCurrentWindow(x, y, w, h)
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
+   local win = hs.window.focusedWindow()
+   local f = win:frame()
 
-  f.x = x
-  f.y = y
-  f.w = w
-  f.h = h
-  win:setFrame(f)
+   f.x = x
+   f.y = y
+   f.w = w
+   f.h = h
+   win:setFrame(f)
 end
 
 step = 0
@@ -38,15 +58,22 @@ end)
 
 hs.hotkey.bind(ctrl_alt, "a", function()
                   local max = hs.window.focusedWindow():screen():frame()
-                  local deltas = { -column_width, 0, column_width }
+                  local deltas = { -columnWidth(), 0, columnWidth() }
 
                   resizeCurrentWindow(max.x, max.y, (max.w/2) + deltas[nextStep()], max.h)
 end)
 
-hs.hotkey.bind(ctrl_alt, "d", function()
+hs.hotkey.bind(ctrl_alt, "s", function()
                   local max = hs.window.focusedWindow():screen():frame()
-                  local deltas = { -column_width, 0, column_width }
                   local next_step = nextStep()
 
-                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 + 2 * column_width - deltas[next_step], max.h)
+                  resizeCurrentWindowInBlocks(3 - next_step,0,3 + next_step * 2,2)
+end)
+
+hs.hotkey.bind(ctrl_alt, "d", function()
+                  local max = hs.window.focusedWindow():screen():frame()
+                  local deltas = { -columnWidth(), 0, columnWidth() }
+                  local next_step = nextStep()
+
+                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 + 2 * columnWidth() - deltas[next_step], max.h)
 end)

@@ -75,5 +75,5 @@ hs.hotkey.bind(ctrl_alt, "d", function()
                   local deltas = { -columnWidth(), 0, columnWidth() }
                   local next_step = nextStep()
 
-                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 + 2 * columnWidth() - deltas[next_step], max.h)
+                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 - deltas[next_step], max.h)
 end)

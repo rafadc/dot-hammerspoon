@@ -1,4 +1,4 @@
-hs.window.animationDuration = 0.1
+hs.window.animationDuration = 0.01
 
 columns = 9
 rows = 2
@@ -63,6 +63,21 @@ hs.hotkey.bind(ctrl_alt, "a", function()
                   resizeCurrentWindow(max.x, max.y, (max.w/2) + deltas[nextStep()], max.h)
 end)
 
+hs.hotkey.bind(ctrl_alt, "q", function()
+                  local max = hs.window.focusedWindow():screen():frame()
+                  local deltas = { -columnWidth(), 0, columnWidth() }
+
+                  resizeCurrentWindow(max.x, max.y, (max.w/2) + deltas[nextStep()], max.h / 2)
+end)
+
+hs.hotkey.bind(ctrl_alt, "z", function()
+                  local max = hs.window.focusedWindow():screen():frame()
+                  local deltas = { -columnWidth(), 0, columnWidth() }
+
+                  resizeCurrentWindow(max.x, max.y + max.h / 2, (max.w/2) + deltas[nextStep()], max.h / 2)
+end)
+
+
 hs.hotkey.bind(ctrl_alt, "s", function()
                   local max = hs.window.focusedWindow():screen():frame()
                   local next_step = nextStep()
@@ -76,4 +91,20 @@ hs.hotkey.bind(ctrl_alt, "d", function()
                   local next_step = nextStep()
 
                   resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 - deltas[next_step], max.h)
+end)
+
+hs.hotkey.bind(ctrl_alt, "e", function()
+                  local max = hs.window.focusedWindow():screen():frame()
+                  local deltas = { -columnWidth(), 0, columnWidth() }
+                  local next_step = nextStep()
+
+                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y, max.w/2 - deltas[next_step], max.h / 2)
+end)
+
+hs.hotkey.bind(ctrl_alt, "c", function()
+                  local max = hs.window.focusedWindow():screen():frame()
+                  local deltas = { -columnWidth(), 0, columnWidth() }
+                  local next_step = nextStep()
+
+                  resizeCurrentWindow(max.x + (max.w / 2) + deltas[next_step], max.y + max.h / 2, max.w/2 - deltas[next_step], max.h / 2)
 end)
